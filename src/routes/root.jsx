@@ -1,16 +1,25 @@
-import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
-import { Button, Row, Input, Col } from "antd";
-import { getContacts, createContact } from "../contacts";
+import {
+  Outlet,
+  Link,
+  useLoaderData,
+  Form,
+  useNavigation,
+} from "react-router-dom";
+import { Row, Input, Col } from "antd";
+// import { useContext } from "react";
+// import { AppContext } from "../AppContext";
 
 export default function Root() {
+  // const { dispatch } = useContext(AppContext);
   const { contacts } = useLoaderData();
-  console.log(contacts);
+  const navigation = useNavigation();
+  // console.log(contacts);
   return (
     <Row>
-      <Col span={8} id="sidebar">
+      <Col span={7} id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
-          <form id="search-form" role="search">
+          <Form id="search-form" role="search">
             <Input
               id="q"
               aria-label="Search contacts"
@@ -21,12 +30,13 @@ export default function Root() {
 
             <div id="search-spinner" aria-hidden hidden={true} />
             <div className="sr-only" aria-live="polite"></div>
-          </form>
+          </Form>
           <Form method="post">
-            <Button type="submit">New</Button>
+            <button type="submit">New</button>
           </Form>
         </div>
         <nav>
+          {/* {console.log("contacts", contacts.length)} */}
           {contacts.length ? (
             <ul>
               {contacts.map((contact) => (
@@ -59,18 +69,14 @@ export default function Root() {
           </ul> */}
         </nav>
       </Col>
-      <Col span={16} id="detail">
+      <Col
+        span={2}
+        id="detail"
+        className={navigation.state === "loading" ? "loading" : ""}
+      ></Col>
+      <Col span={15} id="detail">
         <Outlet />
       </Col>
     </Row>
   );
 }
-// export async function loader() {
-//   const contacts = await getContacts();
-//   console.log(contacts.);
-//   return { contacts };
-// }
-// export async function action() {
-//   const contact = await createContact();
-//   return { contact };
-// }

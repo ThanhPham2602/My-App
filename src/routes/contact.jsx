@@ -1,19 +1,27 @@
 import { Row, Col } from "antd";
-import { Form } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
+
+function getContact() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(console.log("123")), 1000);
+  });
+}
+
+export async function loader({ params }) {
+  const contact = await getContact(params.contactId);
+  console.log("params", params);
+  // console.log("object contact", contact);
+  return { contact };
+}
 
 export default function Contact() {
-  const contact = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://placekitten.com/g/200/200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
-  };
+  const { contact } = useLoaderData();
+  console.log("object contact", contact);
+
   return (
     <Row id="contact">
       <Col span={12}>
-        <img key={contact.avatar} src={contact.avatar || null} alt="" />
+        <img key={contact.avatar} src={contact.avatar || null} alt="pic" />
       </Col>
 
       <Col span={12}>
